@@ -1,28 +1,30 @@
+<div class="mb-2 d-flex align-items-center gap-2 cursor-pointer" routerLink="..">
+  <i class="bi bi-chevron-left"></i> Back
+</div>
 <h1>ToDo - Liste XY</h1>
 
 <ul class="list-group mt-5">
-  <li
-    class="list-group-item "
-    *ngFor="let item of todos; let i = index">
+  <li class="list-group-item" *ngFor="let item of (list | async)?.items; let i = index">
     <div class="w-100 d-flex align-items-center">
-    <div class="flex-row flex-grow-1 text-truncate">
-      <input
-        class="form-check-input me-2"
-        type="checkbox"
-        [(ngModel)]="item.checked"
-        [checked]="item.checked"
-        value=""
-        [id]="'todo-' + i" />
-      <label
-        class="form-check-label"
-        [ngClass]="{ 'text-decoration-line-through': item.checked }"
-        [for]="'todo-' + i"
-        >{{ item.title }}</label
-      >
-    </div>
-    <div>
-      <button class="btn btn-danger" (click)="deleteTodo(item.id)"><i class="bi bi-trash3"></i></button>
-    </div>
+      <div class="flex-row flex-grow-1 text-truncate">
+        <input
+          class="form-check-input me-2"
+          type="checkbox"
+          [(ngModel)]="item.checked"
+          [checked]="item.checked"
+          (ngModelChange)="updateItem(item)"
+          value=""
+          [id]="'todo-' + i" />
+        <label
+          class="form-check-label"
+          [ngClass]="{ 'text-decoration-line-through': item.checked }"
+          [for]="'todo-' + i"
+          >{{ item.title }}</label
+        >
+      </div>
+      <div>
+        <button class="btn btn-danger" (click)="deleteTodo(item.id)"><i class="bi bi-trash3"></i></button>
+      </div>
     </div>
   </li>
   <li class="list-group-item">

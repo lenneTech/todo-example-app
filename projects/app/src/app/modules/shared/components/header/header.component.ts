@@ -27,16 +27,18 @@ export class HeaderComponent implements OnInit {
   }
 
   logout() {
-    this.authService.logout();
-    this.router.navigate(['/']);
-    this.toastService.show(
-      {
-        id: 'logout-toast',
-        type: ToastType.SUCCESS,
-        title: 'Erfolgreich',
-        description: 'Erfolgreich ausgeloggt',
+    this.authService.logout().subscribe({
+      next: () => {
+        this.toastService.show(
+          {
+            id: 'logout-toast',
+            type: ToastType.SUCCESS,
+            title: 'Erfolgreich',
+            description: 'Erfolgreich ausgeloggt',
+          },
+          2000
+        );
       },
-      2000
-    );
+    });
   }
 }

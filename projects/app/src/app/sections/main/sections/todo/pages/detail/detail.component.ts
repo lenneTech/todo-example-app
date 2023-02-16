@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { Helper } from '@lenne.tech/ng-base/shared';
+import { ActivatedRoute } from '@angular/router';
+import { TodoService } from '../../services/todo.service';
+import { Observable } from 'rxjs';
+import { TodoList } from '../../models/todo-list.model';
+import { TodoItem } from '../../models/todo-item.model';
 
 @Component({
   selector: 'app-detail',
@@ -8,42 +12,27 @@ import { Helper } from '@lenne.tech/ng-base/shared';
   styleUrls: ['./detail.component.scss'],
 })
 export class DetailComponent implements OnInit {
-  list = {
-    id: Helper.getUID(),
-    title: 'Abc',
-    description: 'Lorem ipsum',
-    createdAt: new Date(),
-  };
-
-  todos = [
-    {
-      id: Helper.getUID(),
-      title: 'abc',
-      checked: true,
-    },
-    {
-      id: Helper.getUID(),
-      title: 'abc',
-      checked: false,
-    },
-    {
-      id: Helper.getUID(),
-      title: 'abc',
-      checked: true,
-    },
-    {
-      id: Helper.getUID(),
-      title: 'abc',
-      checked: true,
-    },
-  ];
-
   input: FormControl;
+  list: Observable<TodoList>;
+  listId: string;
 
-  constructor() {}
+  constructor(private route: ActivatedRoute, private todoService: TodoService) {}
 
   ngOnInit(): void {
     this.input = new FormControl<any>('');
+
+    this.route.params.subscribe({
+      next: params => {
+        if (params['id']) {
+          this.listId = params['id'];
+          this.getListById(params['id']);
+        }
+      },
+    });
+  }
+
+  getListById(id: string) {
+    this.list = this.todoService.getList(id);
   }
 
   addTodo() {
@@ -51,19 +40,27 @@ export class DetailComponent implements OnInit {
       return;
     }
 
-    this.todos.push({
-      id: Helper.getUID(),
-      title: this.input.value,
-      checked: false,
+    this.todoService.addItemToList(this.listId, TodoItem.map({ title: this.input.value, checked: false })).subscribe({
+      next: () => {
+        this.input.reset();
+        this.getListById(this.listId);
+      },
     });
+  }
 
-    this.input.reset();
+  updateItem(item: TodoItem) {
+    this.todoService.updateItem(item.id, TodoItem.map({ checked: item.checked })).subscribe({
+      next: () => {
+        this.getListById(this.listId);
+      },
+    });
   }
 
   deleteTodo(id: string) {
-    this.todos.splice(
-      this.todos.findIndex(e => e.id === id),
-      1
-    );
+    this.todoService.removeItemFromList(this.listId, id).subscribe({
+      next: () => {
+        this.getListById(this.listId);
+      },
+    });
   }
 }

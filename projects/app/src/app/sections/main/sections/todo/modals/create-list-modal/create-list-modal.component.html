@@ -1,0 +1,14 @@
+<div class="modal-header">
+  <h4 class="modal-title">Create new list</h4>
+  <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss('Cross click')"></button>
+</div>
+<div class="modal-body">
+  <form [formGroup]="form">
+    <base-input label="Title" [control]="form.get('title')"></base-input>
+    <base-input label="Description" [control]="form.get('description')"></base-input>
+  </form>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-danger" (click)="activeModal.dismiss()">Cancel</button>
+  <button type="button" class="btn btn-success" (click)="submitCreate()">Create</button>
+</div>
