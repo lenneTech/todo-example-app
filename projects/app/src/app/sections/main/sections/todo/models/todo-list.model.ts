@@ -5,7 +5,7 @@ export class TodoList extends Standard {
   id: string = undefined;
   createdAt: Date = undefined;
   title: string = undefined;
-  description: boolean = undefined;
+  description: string = undefined;
   items: TodoItem[] = [];
 
   public override map(data: Partial<this> | { [key: string]: any }): this {

@@ -33,9 +33,9 @@ export class TodoService extends GraphQLPlusService {
     });
   }
 
-  updateList(input: TodoListInput): Observable<TodoList> {
+  updateList(id: string, input: TodoListInput): Observable<TodoList> {
     return this.graphQl('updateTodoList', {
-      arguments: { input },
+      arguments: { id, input },
       fields: ['id', 'createdAt', 'title', 'description'],
       model: TodoList,
     });
@@ -58,7 +58,7 @@ export class TodoService extends GraphQLPlusService {
   }
 
   removeItemFromList(listId: string, itemId: string): Observable<TodoItem> {
-    return this.graphQl('removeItemToTodoList', {
+    return this.graphQl('removeItemFromTodoList', {
       arguments: { listId, itemId },
       fields: ['id'],
       model: TodoItem,

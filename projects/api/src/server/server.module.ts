@@ -7,6 +7,8 @@ import { CronJobs } from './common/services/cron-jobs.service';
 import { AuthModule } from './modules/auth/auth.module';
 import { FileModule } from './modules/file/file.module';
 import { MetaModule } from './modules/meta/meta.module';
+import { TodoItemModule } from './modules/todo-item/todo-item.module';
+import { TodoListModule } from './modules/todo-list/todo-list.module';
 import { ServerController } from './server.controller';
 
 /**
@@ -33,6 +35,8 @@ import { ServerController } from './server.controller';
 
     // Include FileModule for file handling
     FileModule,
+    TodoItemModule,
+    TodoListModule,
   ],
 
   // Include services and scalars

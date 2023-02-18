@@ -26,7 +26,19 @@ export class HeaderComponent implements OnInit {
     });
   }
 
-  logout() {
+  async logout() {
+    this.authService.logout();
+    await this.router.navigate(['/']);
+    this.toastService.show(
+      {
+        id: 'logout-toast',
+        type: ToastType.SUCCESS,
+        title: 'Erfolgreich',
+        description: 'Erfolgreich ausgeloggt',
+      },
+      2000
+    );
+    /*
     this.authService.logout().subscribe({
       next: () => {
         this.toastService.show(
@@ -40,5 +52,6 @@ export class HeaderComponent implements OnInit {
         );
       },
     });
+     */
   }
 }
