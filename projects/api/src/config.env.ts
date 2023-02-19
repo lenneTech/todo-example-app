@@ -68,7 +68,7 @@ export const config: { [env: string]: Partial<IServerOptions> } = {
     loadLocalConfig: false,
     logExceptions: true,
     mongoose: {
-      uri: 'mongodb://127.0.0.1/nest-server-local',
+      uri: 'mongodb://127.0.0.1/todo-app-example-local',
     },
     port: 3000,
     sha256: true,
@@ -137,7 +137,7 @@ export const config: { [env: string]: Partial<IServerOptions> } = {
     loadLocalConfig: false,
     logExceptions: true,
     mongoose: {
-      uri: 'mongodb://overlay_mongo1/nest-server-develop',
+      uri: 'mongodb://overlay_mongo1/todo-app-example-develop',
     },
     port: 3000,
     sha256: true,
@@ -206,7 +206,7 @@ export const config: { [env: string]: Partial<IServerOptions> } = {
     loadLocalConfig: false,
     logExceptions: true,
     mongoose: {
-      uri: 'mongodb://overlay_mongo1/nest-server-test',
+      uri: 'mongodb://overlay_mongo1/todo-app-example-test',
     },
     port: 3000,
     sha256: true,
@@ -275,7 +275,7 @@ export const config: { [env: string]: Partial<IServerOptions> } = {
     loadLocalConfig: false,
     logExceptions: true,
     mongoose: {
-      uri: 'mongodb://overlay_mongo1/nest-server-preview',
+      uri: 'mongodb://overlay_mongo1/todo-app-example-preview',
     },
     port: 3000,
     sha256: true,
@@ -344,7 +344,7 @@ export const config: { [env: string]: Partial<IServerOptions> } = {
     loadLocalConfig: false,
     logExceptions: true,
     mongoose: {
-      uri: 'mongodb://overlay_mongo1/nest-server-prod',
+      uri: 'mongodb://overlay_mongo1/todo-app-example-prod',
     },
     port: 3000,
     sha256: true,

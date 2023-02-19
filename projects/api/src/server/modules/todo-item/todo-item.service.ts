@@ -2,13 +2,15 @@ import { ConfigService, CrudService } from '@lenne.tech/nest-server';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { TodoItemCreateInput } from './inputs/todo-item-create.input';
+import { TodoItemInput } from './inputs/todo-item.input';
 import { TodoItem, TodoItemDocument } from './todo-item.model';
 
 /**
  * TodoItem service
  */
 @Injectable()
-export class TodoItemService extends CrudService<TodoItem> {
+export class TodoItemService extends CrudService<TodoItem, TodoItemCreateInput, TodoItemInput> {
   // ===================================================================================================================
   // Injections
   // ===================================================================================================================

@@ -33,10 +33,11 @@ export class TodoListResolver {
   /**
    * Get and total count TodoLists (via filter)
    */
-  @Roles(RoleEnum.ADMIN)
+  @Roles(RoleEnum.S_USER)
   @Query(() => FindAndCountTodoListsResult, { description: 'Find TodoLists (via filter)' })
-  async findAndCountTodoLists(@Info() info: GraphQLResolveInfo, @Args() args?: FilterArgs) {
+  async findAndCountTodoLists(@GraphQLUser() user: User, @Info() info: GraphQLResolveInfo, @Args() args?: FilterArgs) {
     return await this.todoListService.findAndCount(args, {
+      currentUser: user,
       fieldSelection: { info, select: 'findAndCountTodoLists.items' },
       inputType: FilterArgs,
     });
@@ -89,7 +90,8 @@ export class TodoListResolver {
     return await this.todoListService.addItem(id, input, {
       currentUser: user,
       fieldSelection: { info, select: 'addItemToTodoList' },
-      inputType: TodoListInput,
+      inputType: TodoItemCreateInput,
+      roles: [RoleEnum.ADMIN, RoleEnum.S_CREATOR],
     });
   }
 

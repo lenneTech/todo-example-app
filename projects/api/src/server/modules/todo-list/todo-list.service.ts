@@ -1,20 +1,20 @@
-import { assignPlain, ConfigService, CrudService, getStringIds, ServiceOptions } from '@lenne.tech/nest-server';
+import { ConfigService, CrudService, getStringIds, ServiceOptions } from '@lenne.tech/nest-server';
 import { forwardRef, Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { PubSub } from 'graphql-subscriptions';
 import { Model } from 'mongoose';
 import { TodoItemCreateInput } from '../todo-item/inputs/todo-item-create.input';
-import { TodoItemInput } from '../todo-item/inputs/todo-item.input';
 import { TodoItem } from '../todo-item/todo-item.model';
 import { TodoItemService } from '../todo-item/todo-item.service';
 import { TodoListCreateInput } from './inputs/todo-list-create.input';
+import { TodoListInput } from './inputs/todo-list.input';
 import { TodoList, TodoListDocument } from './todo-list.model';
 
 /**
  * TodoList service
  */
 @Injectable()
-export class TodoListService extends CrudService<TodoList> {
+export class TodoListService extends CrudService<TodoList, TodoListCreateInput, TodoListInput> {
   // ===================================================================================================================
   // Properties
   // ===================================================================================================================
@@ -54,7 +54,9 @@ export class TodoListService extends CrudService<TodoList> {
     }
 
     // Create new TodoItem
-    const todoItem = await this.todoItemService.create(input, serviceOptions);
+    // We use "force" here because the roles in the serviceOptions are intended for the TodoList and not for the TodoItem
+    // To be able to do without "force", the serviceOptions would have to be adapted accordingly
+    const todoItem = await this.todoItemService.createForce(input, serviceOptions);
     if (!todoItem) {
       throw new NotFoundException(`Could not create TodoItem`);
     }
@@ -64,7 +66,11 @@ export class TodoListService extends CrudService<TodoList> {
       todoList.items = [];
     }
     todoList.items.push(todoItem);
-    await this.update(id, { items: getStringIds(todoList.items) }, serviceOptions);
+
+    // Save updated list
+    // We use "raw" here because the roles in the serviceOptions are intended for the TodoItem and not for the TodoList
+    // To be able to do without "raw", the serviceOptions would have to be adapted accordingly
+    await this.updateRaw(id, { items: getStringIds(todoList.items) }, serviceOptions);
 
     // Return added TodoItem
     return todoItem;
@@ -92,9 +98,13 @@ export class TodoListService extends CrudService<TodoList> {
       throw new NotFoundException(`Could not find TodoItem`);
     }
 
-    // Remove item from list and save list
+    // Remove item from list
     todoList.items = todoList.items.filter((item) => getStringIds(item) !== itemId);
-    await this.update(listId, { items: getStringIds(todoList.items) }, serviceOptions);
+
+    // Save updated list
+    // We use "raw" here because the roles in the serviceOptions are intended for the TodoItem and not for the TodoList
+    // To be able to do without "raw", the serviceOptions would have to be adapted accordingly
+    await this.updateRaw(listId, { items: getStringIds(todoList.items) }, serviceOptions);
 
     // Return removed TodoItem
     return deletedTodoItem;
