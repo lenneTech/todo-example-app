@@ -90,7 +90,6 @@ export class TodoListResolver {
       currentUser: user,
       fieldSelection: { info, select: 'addItemToTodoList' },
       inputType: TodoListInput,
-      // roles: [RoleEnum.ADMIN, RoleEnum.S_CREATOR],
     });
   }
 
