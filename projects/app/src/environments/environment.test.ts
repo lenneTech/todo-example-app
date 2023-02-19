@@ -4,10 +4,10 @@ export const environment = {
 
   // Settings for @lenne.tech/ng-base
   prefix: 'app-test',
-  apiUrl: 'http://127.0.0.1:3000/graphql',
-  wsUrl: 'ws://127.0.0.1:3000/graphql',
-  restUrl: 'http://127.0.0.1:3000/api',
-  appUrl: 'http://127.0.0.1:4200',
+  apiUrl: 'https://api.test.todo.lenne.tech/graphql',
+  wsUrl: 'wss://api.test.todo.lenne.tech/graphql',
+  restUrl: 'https://api.test.todo.lenne.tech/api',
+  appUrl: 'https://test.todo.lenne.tech',
   authGuardRedirectUrl: '/auth',
   logging: false,
   // version: '0.0.1',
