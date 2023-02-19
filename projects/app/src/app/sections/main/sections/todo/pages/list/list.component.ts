@@ -36,6 +36,7 @@ export class ListComponent implements OnInit {
 
   async deleteList(id: string) {
     await firstValueFrom(this.todoService.deleteList(id));
+    this.getAllLists();
   }
 
   identify(index: number, item: TodoList) {

@@ -4,20 +4,21 @@
 </div>
 
 <div class="list-group mt-5">
-  <a
-    class="list-group-item list-group-item-action cursor-pointer"
+  <div
+    class="list-group-item list-group-item-action cursor-pointer d-flex align-items-center"
     aria-current="true"
-    *ngFor="let item of lists | async; trackBy: identify"
-    [routerLink]="'/todo/detail/' + item.id">
-    <div class="d-flex w-100 justify-content-between">
+    *ngFor="let item of lists | async; trackBy: identify">
+    <div class="d-flex w-100 justify-content-between" [routerLink]="'/todo/detail/' + item.id">
       <div>
         <h5 class="mb-1">{{ item.title }}</h5>
         <p class="mb-1">{{ item.description }}</p>
       </div>
       <div class="d-flex flex-column align-items-center">
         <small>{{ item.createdAt | dateAgo }}</small>
-        <i class="bi bi-trash3 text-danger mt-2" (click)="deleteList(item.id)"></i>
       </div>
     </div>
-  </a>
+    <div>
+      <i class="bi bi-trash3 text-danger ms-3" (click)="deleteList(item.id)"></i>
+    </div>
+  </div>
 </div>
