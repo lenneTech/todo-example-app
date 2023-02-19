@@ -49,9 +49,9 @@ export class TodoService extends GraphQLPlusService {
     });
   }
 
-  addItemToList(listId: string, item: TodoItem): Observable<TodoItem> {
+  addItemToList(listId: string, input: TodoItem): Observable<TodoItem> {
     return this.graphQl('addItemToTodoList', {
-      arguments: { listId, item },
+      arguments: { listId, input },
       fields: ['id', 'title', 'checked'],
       model: TodoItem,
     });

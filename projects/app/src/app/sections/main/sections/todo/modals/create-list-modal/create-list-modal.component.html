@@ -4,8 +4,8 @@
 </div>
 <div class="modal-body">
   <form [formGroup]="form">
-    <base-input label="Title" [control]="form.get('title')"></base-input>
-    <base-input label="Description" [control]="form.get('description')"></base-input>
+    <base-input label="Title" [required]="true" [control]="form.get('title')"></base-input>
+    <base-input label="Description" [required]="true" [control]="form.get('description')"></base-input>
   </form>
 </div>
 <div class="modal-footer">

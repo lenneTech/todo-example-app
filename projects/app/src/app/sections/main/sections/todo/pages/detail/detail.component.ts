@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { TodoService } from '../../services/todo.service';
-import { Observable } from 'rxjs';
+import { firstValueFrom } from 'rxjs';
 import { TodoList } from '../../models/todo-list.model';
 import { TodoItem } from '../../models/todo-item.model';
 
@@ -13,7 +13,7 @@ import { TodoItem } from '../../models/todo-item.model';
 })
 export class DetailComponent implements OnInit {
   input: FormControl;
-  list: Observable<TodoList>;
+  list: TodoList;
   listId: string;
 
   constructor(private route: ActivatedRoute, private todoService: TodoService) {}
@@ -31,8 +31,8 @@ export class DetailComponent implements OnInit {
     });
   }
 
-  getListById(id: string) {
-    this.list = this.todoService.getList(id);
+  async getListById(id: string) {
+    this.list = await firstValueFrom(this.todoService.getList(id));
   }
 
   addTodo() {
@@ -62,5 +62,9 @@ export class DetailComponent implements OnInit {
         this.getListById(this.listId);
       },
     });
+  }
+
+  identify(index: number, item: TodoItem) {
+    return item.id;
   }
 }

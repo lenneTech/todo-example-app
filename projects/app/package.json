@@ -44,7 +44,7 @@
     "@angular/platform-server": "14.2.12",
     "@angular/router": "14.2.12",
     "@apollo/client": "3.7.8",
-    "@lenne.tech/ng-base": "14.34.0",
+    "@lenne.tech/ng-base": "14.35.0",
     "@ng-bootstrap/ng-bootstrap": "13.1.1",
     "@nguniversal/express-engine": "14.2.3",
     "apollo-angular": "4.2.1",
