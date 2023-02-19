@@ -6,6 +6,8 @@ import * as express from 'express';
 import { existsSync } from 'fs';
 import { join } from 'path';
 
+import 'localstorage-polyfill';
+
 import { AppServerModule } from './src/main.server';
 import compression from 'compression';
 
