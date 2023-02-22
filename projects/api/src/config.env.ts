@@ -53,7 +53,7 @@ export const config: { [env: string]: Partial<IServerOptions> } = {
       // tslint:disable-next-line:max-line-length
       secret: 'SECRET_OR_PRIVATE_KEY_LOCAL',
       signInOptions: {
-        expiresIn: '15m',
+        expiresIn: '1d',
       },
       refresh: {
         renewal: true,
@@ -122,7 +122,7 @@ export const config: { [env: string]: Partial<IServerOptions> } = {
       // tslint:disable-next-line:max-line-length
       secret: 'SECRET_OR_PRIVATE_KEY_DEV',
       signInOptions: {
-        expiresIn: '15m',
+        expiresIn: '1d',
       },
       refresh: {
         renewal: true,
@@ -191,7 +191,7 @@ export const config: { [env: string]: Partial<IServerOptions> } = {
       // tslint:disable-next-line:max-line-length
       secret: 'SECRET_OR_PRIVATE_KEY_TEST',
       signInOptions: {
-        expiresIn: '15m',
+        expiresIn: '1d',
       },
       refresh: {
         renewal: true,
@@ -260,7 +260,7 @@ export const config: { [env: string]: Partial<IServerOptions> } = {
       // tslint:disable-next-line:max-line-length
       secret: 'SECRET_OR_PRIVATE_KEY_PREV',
       signInOptions: {
-        expiresIn: '15m',
+        expiresIn: '1d',
       },
       refresh: {
         renewal: true,
@@ -329,7 +329,7 @@ export const config: { [env: string]: Partial<IServerOptions> } = {
       // tslint:disable-next-line:max-line-length
       secret: 'SECRET_OR_PRIVATE_KEY_PROD',
       signInOptions: {
-        expiresIn: '15m',
+        expiresIn: '1d',
       },
       refresh: {
         renewal: true,
