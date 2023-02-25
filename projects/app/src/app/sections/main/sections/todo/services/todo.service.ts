@@ -12,7 +12,7 @@ export class TodoService extends GraphQLPlusService {
   getAllLists(args?: FindArgs): Observable<TodoList[]> {
     return this.graphQl('findTodoLists', {
       arguments: { ...args },
-      fields: ['id', 'createdAt', 'title', 'description'],
+      fields: ['id', 'createdAt', 'title', 'description', { items: ['id', 'title', 'checked'] }],
       model: TodoList,
     });
   }

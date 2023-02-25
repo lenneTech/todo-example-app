@@ -1,11 +1,9 @@
-import { FilterArgs, GraphQLUser, RoleEnum, Roles } from '@lenne.tech/nest-server';
+import { FilterArgs, GraphQLServiceOptions, RoleEnum, Roles, ServiceOptions } from '@lenne.tech/nest-server';
 import { Inject } from '@nestjs/common';
-import { Args, Info, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { GraphQLResolveInfo } from 'graphql';
+import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { PubSub } from 'graphql-subscriptions';
 import { TodoItemCreateInput } from '../todo-item/inputs/todo-item-create.input';
 import { TodoItem } from '../todo-item/todo-item.model';
-import { User } from '../user/user.model';
 import { TodoListCreateInput } from './inputs/todo-list-create.input';
 import { TodoListInput } from './inputs/todo-list.input';
 import { FindAndCountTodoListsResult } from './outputs/find-and-count-todo-lists-result.output';
@@ -35,10 +33,12 @@ export class TodoListResolver {
    */
   @Roles(RoleEnum.S_USER)
   @Query(() => FindAndCountTodoListsResult, { description: 'Find TodoLists (via filter)' })
-  async findAndCountTodoLists(@GraphQLUser() user: User, @Info() info: GraphQLResolveInfo, @Args() args?: FilterArgs) {
+  async findAndCountTodoLists(
+    @GraphQLServiceOptions({ gqlPath: 'findAndCountTodoLists.items' }) serviceOptions: ServiceOptions,
+    @Args() args?: FilterArgs
+  ) {
     return await this.todoListService.findAndCount(args, {
-      currentUser: user,
-      fieldSelection: { info, select: 'findAndCountTodoLists.items' },
+      ...serviceOptions,
       inputType: FilterArgs,
     });
   }
@@ -48,10 +48,9 @@ export class TodoListResolver {
    */
   @Roles(RoleEnum.S_USER)
   @Query(() => [TodoList], { description: 'Find TodoLists (via filter)' })
-  async findTodoLists(@Info() info: GraphQLResolveInfo, @GraphQLUser() user: User, @Args() args?: FilterArgs) {
+  async findTodoLists(@GraphQLServiceOptions() serviceOptions: ServiceOptions, @Args() args?: FilterArgs) {
     return await this.todoListService.find(args, {
-      currentUser: user,
-      fieldSelection: { info, select: 'findTodoLists' },
+      ...serviceOptions,
       inputType: FilterArgs,
     });
   }
@@ -62,14 +61,10 @@ export class TodoListResolver {
   @Roles(RoleEnum.S_USER)
   @Query(() => TodoList, { description: 'Get TodoList with specified ID' })
   async getTodoList(
-    @Info() info: GraphQLResolveInfo,
-    @GraphQLUser() user: User,
+    @GraphQLServiceOptions() serviceOptions: ServiceOptions,
     @Args('id') id: string
   ): Promise<TodoList> {
-    return await this.todoListService.get(id, {
-      currentUser: user,
-      fieldSelection: { info, select: 'getTodoList' },
-    });
+    return await this.todoListService.get(id, serviceOptions);
   }
 
   // ===========================================================================
@@ -82,14 +77,12 @@ export class TodoListResolver {
   @Roles(RoleEnum.S_USER)
   @Mutation(() => TodoItem, { description: 'Add new item to TodoList' })
   async addItemToTodoList(
-    @Info() info: GraphQLResolveInfo,
-    @GraphQLUser() user: User,
+    @GraphQLServiceOptions() serviceOptions: ServiceOptions,
     @Args('listId') id: string,
     @Args('input') input: TodoItemCreateInput
   ): Promise<TodoItem> {
     return await this.todoListService.addItem(id, input, {
-      currentUser: user,
-      fieldSelection: { info, select: 'addItemToTodoList' },
+      ...serviceOptions,
       inputType: TodoItemCreateInput,
       roles: [RoleEnum.ADMIN, RoleEnum.S_CREATOR],
     });
@@ -101,13 +94,11 @@ export class TodoListResolver {
   @Roles(RoleEnum.S_USER)
   @Mutation(() => TodoList, { description: 'Create a new TodoList' })
   async createTodoList(
-    @Info() info: GraphQLResolveInfo,
-    @GraphQLUser() user: User,
+    @GraphQLServiceOptions() serviceOptions: ServiceOptions,
     @Args('input') input: TodoListCreateInput
   ): Promise<TodoList> {
     return await this.todoListService.create(input, {
-      currentUser: user,
-      fieldSelection: { info, select: 'createTodoList' },
+      ...serviceOptions,
       inputType: TodoListCreateInput,
     });
   }
@@ -118,13 +109,11 @@ export class TodoListResolver {
   @Roles(RoleEnum.S_USER)
   @Mutation(() => TodoList, { description: 'Delete existing TodoList' })
   async deleteTodoList(
-    @Info() info: GraphQLResolveInfo,
-    @GraphQLUser() user: User,
+    @GraphQLServiceOptions() serviceOptions: ServiceOptions,
     @Args('id') id: string
   ): Promise<TodoList> {
     return await this.todoListService.delete(id, {
-      currentUser: user,
-      fieldSelection: { info, select: 'deleteTodoList' },
+      ...serviceOptions,
       roles: [RoleEnum.ADMIN, RoleEnum.S_CREATOR],
     });
   }
@@ -135,14 +124,12 @@ export class TodoListResolver {
   @Roles(RoleEnum.S_USER)
   @Mutation(() => TodoItem, { description: 'Remove item from TodoList' })
   async removeItemFromTodoList(
-    @Info() info: GraphQLResolveInfo,
-    @GraphQLUser() user: User,
+    @GraphQLServiceOptions() serviceOptions: ServiceOptions,
     @Args('listId') listId: string,
     @Args('itemId') itemId: string
   ): Promise<TodoItem> {
     return await this.todoListService.removeItem(listId, itemId, {
-      currentUser: user,
-      fieldSelection: { info, select: 'removeItemFromTodoList' },
+      ...serviceOptions,
       roles: [RoleEnum.ADMIN, RoleEnum.S_CREATOR],
     });
   }
@@ -153,14 +140,12 @@ export class TodoListResolver {
   @Roles(RoleEnum.S_USER)
   @Mutation(() => TodoList, { description: 'Update existing TodoList' })
   async updateTodoList(
-    @Info() info: GraphQLResolveInfo,
-    @GraphQLUser() user: User,
+    @GraphQLServiceOptions() serviceOptions: ServiceOptions,
     @Args('id') id: string,
     @Args('input') input: TodoListInput
   ): Promise<TodoList> {
     return await this.todoListService.update(id, input, {
-      currentUser: user,
-      fieldSelection: { info, select: 'updateTodoList' },
+      ...serviceOptions,
       inputType: TodoListInput,
       roles: [RoleEnum.ADMIN, RoleEnum.S_CREATOR],
     });

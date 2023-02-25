@@ -1,9 +1,7 @@
-import { GraphQLUser, RoleEnum, Roles } from '@lenne.tech/nest-server';
+import { GraphQLServiceOptions, RoleEnum, Roles, ServiceOptions } from '@lenne.tech/nest-server';
 import { Inject } from '@nestjs/common';
-import { Args, Info, Mutation, Resolver } from '@nestjs/graphql';
-import { GraphQLResolveInfo } from 'graphql';
+import { Args, Mutation, Resolver } from '@nestjs/graphql';
 import { PubSub } from 'graphql-subscriptions';
-import { User } from '../user/user.model';
 import { TodoItemInput } from './inputs/todo-item.input';
 import { TodoItem } from './todo-item.model';
 import { TodoItemService } from './todo-item.service';
@@ -32,14 +30,12 @@ export class TodoItemResolver {
   @Roles(RoleEnum.S_USER)
   @Mutation(() => TodoItem, { description: 'Update existing TodoItem' })
   async updateTodoItem(
-    @Info() info: GraphQLResolveInfo,
-    @GraphQLUser() user: User,
+    @GraphQLServiceOptions() serviceOptions: ServiceOptions,
     @Args('id') id: string,
     @Args('input') input: TodoItemInput
   ): Promise<TodoItem> {
     return await this.todoItemService.update(id, input, {
-      currentUser: user,
-      fieldSelection: { info, select: 'updateTodoItem' },
+      ...serviceOptions,
       inputType: TodoItemInput,
       roles: [RoleEnum.ADMIN, RoleEnum.S_CREATOR],
     });
