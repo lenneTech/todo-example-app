@@ -39,6 +39,9 @@ export class HeaderComponent implements OnInit {
           2000
         );
       },
+      error: () => {
+        this.authService.clearSession();
+      },
     });
   }
 }
